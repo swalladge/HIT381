@@ -26,7 +26,7 @@ header = div [ class "centre" ] [ h1 [] [ text "Electricity Alert" ] ]
 welcome : List Device -> Html Msg
 welcome d = div []
     [ h1 [ class "centre" ] [ text "Welcome to Electricity Alert!" ]
-    , button [ onClick Home, class "btn btn-primary" ] [ text "Get Started!" ]
+    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Get Started!" ]
     ]
 
 
@@ -41,16 +41,19 @@ home d = div []
     -- , div [] [ text "power draw" ]
     , div [] [
         device_list d
-      , button [ onClick AddDevice, class "btn btn-primary" ] [ text "Add Appliance" ]
+      , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
       ]
 
     ]
 
-
 device_in_list : Int -> Device -> Html Msg
-device_in_list index device = div [ onClick (ViewDevice index)] [
-    text device.name
-  , text (if device.running then " (running)" else " (off)")
+device_in_list index device = div [ class "panel panel-warning", onClick (ViewDevice index)] [
+  div [ class "panel-heading" ] [
+      text device.name
+    , div [ class (if device.running then "status-icon on" else "status-icon off") ] [
+        text (if device.running then "on" else "off")
+      ]
+    ]
   ]
 
 
@@ -65,14 +68,14 @@ add_device devices name addr = div []
   , div [] [ text "Add Appliance" ]
   , label [] [
       text "Name: "
-    , input [ type_ "text", placeholder "Name", onInput UpdateName, value name ] [ ]
+    , input [ class "form-control", type_ "text", placeholder "Name", onInput UpdateName, value name ] [ ]
     ]
   , label [] [
       text "Address: "
-    , input [ type_ "text", placeholder "https://10.0.0.1", onInput UpdateAddress, value addr ] []
+    , input [ class "form-control", type_ "text", placeholder "https://10.0.0.1", onInput UpdateAddress, value addr ] []
     ]
-  , button [ onClick AddDevice2, class "btn btn-primary" ] [ text "Next" ]
-  , button [ onClick Home, class "btn btn-warning" ] [ text "Back to Home" ]
+  , button [ onClick AddDevice2, class "btn btn-block btn-lg btn-primary" ] [ text "Next" ]
+  , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back to Home" ]
   ]
 
 add_device2 : List Device -> Int -> Html Msg
@@ -82,10 +85,10 @@ add_device2 devices draw = div []
   , div [] [ text "Add Appliance" ]
   , label [] [
       text "Power Draw (watts): "
-    , input [ type_ "number", placeholder "0", onInput UpdateDraw, value (toString draw) ] [ ]
+    , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (toString draw) ] [ ]
     ]
-  , button [ onClick SubmitAddDevice, class "btn btn-primary" ] [ text "Save" ]
-  , button [ onClick AddDevice, class "btn btn-warning" ] [ text "Back" ]
+  , button [ onClick SubmitAddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
+  , button [ onClick AddDevice, class "btn btn-lg btn-block btn-warning" ] [ text "Back" ]
   ]
 
 
@@ -96,7 +99,7 @@ view_device devices index =
   [
     text (device.name)
   , text (if device.running then " (running)" else " (off)")
-  , button [ onClick Home ] [ text "Back" ]
+  , button [ onClick Home, class "btn btn-block btn-lg btn-default" ] [ text "Back" ]
   ]
 
 
