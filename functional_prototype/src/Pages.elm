@@ -39,7 +39,7 @@ home d = div []
     ]
 
 
-device_list devices = div [] (List.map (\d -> div [] [ text d.name ]) devices)
+device_list devices = div [] (List.map (\d -> div [] [ text d.name ]) (List.sortBy .name devices))
 
 add_device devices = div []
   [

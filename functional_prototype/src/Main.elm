@@ -41,7 +41,7 @@ update msg model =
 
     SubmitAddDevice ->
       let
-        devices = List.append model.devices [{ name = model.current_device_name }]
+        devices = { name = model.current_device_name } :: model.devices
       in
         { model | current_device_name = "", devices = devices , page = Pages.home devices }
 
