@@ -21,12 +21,12 @@ type alias Device =
   , running : Bool
   }
 
-header = div [] [ text "Electricity Alert" ]
+header = div [ class "centre" ] [ h1 [] [ text "Electricity Alert" ] ]
 
 welcome : List Device -> Html Msg
 welcome d = div []
-    [ div [] [ text "Welcome to Electricity Alert!" ]
-    , button [ onClick Home ] [ text "Get Started!" ]
+    [ h1 [ class "centre" ] [ text "Welcome to Electricity Alert!" ]
+    , button [ onClick Home, class "btn btn-primary" ] [ text "Get Started!" ]
     ]
 
 
@@ -41,7 +41,7 @@ home d = div []
     -- , div [] [ text "power draw" ]
     , div [] [
         device_list d
-      , button [ onClick AddDevice ] [ text "Add Appliance" ]
+      , button [ onClick AddDevice, class "btn btn-primary" ] [ text "Add Appliance" ]
       ]
 
     ]
@@ -71,8 +71,8 @@ add_device devices name addr = div []
       text "Address: "
     , input [ type_ "text", placeholder "https://10.0.0.1", onInput UpdateAddress, value addr ] []
     ]
-  , button [ onClick AddDevice2 ] [ text "Next" ]
-  , button [ onClick Home ] [ text "Back to Home" ]
+  , button [ onClick AddDevice2, class "btn btn-primary" ] [ text "Next" ]
+  , button [ onClick Home, class "btn btn-warning" ] [ text "Back to Home" ]
   ]
 
 add_device2 : List Device -> Int -> Html Msg
@@ -84,8 +84,8 @@ add_device2 devices draw = div []
       text "Power Draw (watts): "
     , input [ type_ "number", placeholder "0", onInput UpdateDraw, value (toString draw) ] [ ]
     ]
-  , button [ onClick SubmitAddDevice ] [ text "Save" ]
-  , button [ onClick AddDevice ] [ text "Back" ]
+  , button [ onClick SubmitAddDevice, class "btn btn-primary" ] [ text "Save" ]
+  , button [ onClick AddDevice, class "btn btn-warning" ] [ text "Back" ]
   ]
 
 

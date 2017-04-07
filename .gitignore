@@ -5,3 +5,6 @@ repl-temp-*
 
 # dynamically generated
 elm.js
+
+# let's not bother with bower components this time...
+bower_components/
