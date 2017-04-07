@@ -12,12 +12,14 @@ main =
 
 type alias Model =
   { page : Html Msg
+  , devices : List Device
+  , current_device_name : String
   }
 
 
 model : Model
 model =
-  Model Pages.welcome
+  (Model (Pages.welcome [])) [] ""
 
 
 -- UPDATE
@@ -26,10 +28,25 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     Welcome ->
-      { model | page = Pages.welcome }
+      { model | page = Pages.welcome model.devices }
 
-    Login ->
-      { model | page = Pages.login }
+    Home ->
+      { model | page = Pages.home model.devices }
+
+    AddDevice ->
+      { model | page = Pages.add_device model.devices }
+
+    UpdateName name ->
+      { model | current_device_name = name }
+
+    SubmitAddDevice ->
+      let
+        devices = List.append model.devices [{ name = model.current_device_name }]
+      in
+        { model | current_device_name = "", devices = devices , page = Pages.home devices }
+
+
+
 
 
 -- VIEW
