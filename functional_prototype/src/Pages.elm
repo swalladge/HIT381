@@ -14,6 +14,7 @@ type Msg
     | UpdateAddress String
     | UpdateDraw String
     | SubmitAddDevice
+    | ViewDevice Int
 
 type alias Device =
   { name : String
@@ -46,8 +47,16 @@ home d = div []
     ]
 
 
+device_in_list : Int -> Device -> Html Msg
+device_in_list index device = div [ onClick (ViewDevice index)] [
+    text device.name
+  , text (if device.running then " (running)" else " (off)")
+  ]
+
+
 device_list : List Device -> Html Msg
-device_list devices = div [] (List.map (\d -> div [] [ text d.name ]) (List.sortBy .name devices))
+device_list devices = div [] (List.indexedMap device_in_list devices)
+
 
 add_device : List Device -> String -> String -> Html Msg
 add_device devices name addr = div []
@@ -72,10 +81,28 @@ add_device2 devices draw = div []
     header
   , div [] [ text "Add Appliance" ]
   , label [] [
-      text "Power Draw: "
+      text "Power Draw (watts): "
     , input [ type_ "number", placeholder "0", onInput UpdateDraw, value (toString draw) ] [ ]
     ]
   , button [ onClick SubmitAddDevice ] [ text "Save" ]
   , button [ onClick AddDevice ] [ text "Back" ]
   ]
+
+
+view_device : List Device -> Int -> Html Msg
+view_device devices index =
+  let device = get index devices
+  in div []
+  [
+    text (device.name)
+  , text (if device.running then " (running)" else " (off)")
+  , button [ onClick Home ] [ text "Back" ]
+  ]
+
+
+get : Int -> List Device -> Device
+get index list =
+  case List.head (List.drop index list) of
+    Nothing -> { name = "INVALID", running = False }
+    Just device -> device
 

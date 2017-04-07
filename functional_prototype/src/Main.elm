@@ -54,9 +54,12 @@ update msg model =
 
     SubmitAddDevice ->
       let
-        devices = { name = model.current_device_name, running = False } :: model.devices
+        devices = (List.sortBy .name ({ name = model.current_device_name, running = False } :: model.devices))
       in
         { model | current_device_name = "", current_device_draw = 0, current_device_address = "", devices = devices , page = Pages.home devices }
+
+    ViewDevice index ->
+      { model | page = Pages.view_device model.devices index }
 
 
 
