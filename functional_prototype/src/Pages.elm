@@ -39,11 +39,11 @@ home d = div []
     , h2 [] [ text "status" ]
     , div [] [ text ((toString (List.length d)) ++ " appliance" ++ (if (List.length d) == 1 then "" else "s")) ]
     , div [] [ text ("Power draw: " ++ (toString (List.sum (List.map (\d -> d.draw) (List.filter (\d -> d.running) d)))) ++ "W") ]
+    , h2 [] [ text "Appliances" ]
     , div [] [
         device_list d
-      , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
       ]
-
+    , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
     ]
 
 device_in_list : Int -> Device -> Html Msg
@@ -58,7 +58,12 @@ device_in_list index device = div [ class "device-listing panel panel-warning", 
 
 
 device_list : List Device -> Html Msg
-device_list devices = div [] (List.indexedMap device_in_list devices)
+device_list devices = div [] (
+  if (List.length devices) == 0 then
+    [ div [] [ text "no appliances registered yet" ] ]
+  else
+    (List.indexedMap device_in_list devices)
+  )
 
 
 add_device : List Device -> String -> String -> Html Msg
