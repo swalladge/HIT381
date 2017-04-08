@@ -104,6 +104,7 @@ view_device devices index =
   [
     header
   , h2 [] [ text ("Manage " ++ device.name) ]
+  , div [] [ text ("Power draw when running: " ++ (toString device.draw) ++ "W") ]
   , div [ class (if device.running then "well on" else "well off") ] [
       text (if device.running then "on" else "off")
     ]
