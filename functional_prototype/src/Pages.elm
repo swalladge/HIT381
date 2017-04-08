@@ -15,6 +15,7 @@ type Msg
     | UpdateDraw String
     | SubmitAddDevice
     | ViewDevice Int
+    | ToggleDevice Int
 
 type alias Device =
   { name : String
@@ -47,7 +48,7 @@ home d = div []
     ]
 
 device_in_list : Int -> Device -> Html Msg
-device_in_list index device = div [ class "panel panel-warning", onClick (ViewDevice index)] [
+device_in_list index device = div [ class "device-listing panel panel-warning", onClick (ViewDevice index)] [
   div [ class "panel-heading" ] [
       text device.name
     , div [ class (if device.running then "status-icon on" else "status-icon off") ] [
@@ -97,9 +98,14 @@ view_device devices index =
   let device = get index devices
   in div []
   [
-    text (device.name)
-  , text (if device.running then " (running)" else " (off)")
-  , button [ onClick Home, class "btn btn-block btn-lg btn-default" ] [ text "Back" ]
+    header
+  , h2 [] [ text ("Manage " ++ device.name) ]
+  , div [ class (if device.running then "well on" else "well off") ] [
+      text (if device.running then "on" else "off")
+    ]
+  , button [ onClick (ToggleDevice index), class "btn btn-block btn-lg btn-primary" ] [ text (if device.running then "Switch off" else "Switch on") ]
+
+  , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
   ]
 
 

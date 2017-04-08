@@ -32,11 +32,13 @@ label {
 }
 
 .on {
-  background-color: lightgreen;
-  color: black;
+  background-color: #dff0d8;
+  background-image: none;
+  color: #3c763d;
 }
 
 .off {
-  background-color: grey;
-  color: black;
+  background-color: #f2dede;
+  background-image: none;
+  color: #a94442;
 }

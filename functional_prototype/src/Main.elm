@@ -61,6 +61,24 @@ update msg model =
     ViewDevice index ->
       { model | page = Pages.view_device model.devices index }
 
+    ToggleDevice index ->
+      let
+        devices = (List.indexedMap (toggle index) model.devices)
+      in
+        { model | page = Pages.view_device devices index, devices = devices }
+
+
+toggle : Int -> Int -> Device -> Device
+toggle target index device =
+  if index == target then
+    { name = device.name
+    , running = not device.running
+    }
+  else
+    device
+
+
+
 
 
 
