@@ -33,18 +33,24 @@ welcome d = div []
 
 
 home : List Device -> Html Msg
-home d = div []
-    [
-      header
-    , h2 [] [ text "status" ]
-    , div [] [ text ((toString (List.length d)) ++ " appliance" ++ (if (List.length d) == 1 then "" else "s")) ]
-    , div [] [ text ("Power draw: " ++ (toString (List.sum (List.map (\d -> d.draw) (List.filter (\d -> d.running) d)))) ++ "W") ]
-    , h2 [] [ text "Appliances" ]
-    , div [] [
-        device_list d
+home d =
+  let
+      n_running = (List.length (List.filter (\a -> a.running) d))
+      n         = (List.length d)
+      draw      = (List.sum (List.map (\d -> d.draw) (List.filter (\d -> d.running) d)))
+  in
+    div []
+      [
+        header
+      , h2 [] [ text "status" ]
+      , div [] [ text ((toString n) ++ " appliance" ++ (if n == 1 then "" else "s") ++ " (" ++ (toString n_running) ++ " running)") ]
+      , div [] [ text ("Power draw: " ++ (toString draw) ++ "W") ]
+      , h2 [] [ text "Appliances" ]
+      , div [] [
+          device_list d
+        ]
+      , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
       ]
-    , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
-    ]
 
 device_in_list : Int -> Device -> Html Msg
 device_in_list index device = div [ class "device-listing panel panel-warning", onClick (ViewDevice index)] [
