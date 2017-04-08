@@ -20,6 +20,7 @@ type Msg
 type alias Device =
   { name : String
   , running : Bool
+  , draw : Int
   }
 
 header = div [ class "centre" ] [ h1 [] [ text "Electricity Alert" ] ]
@@ -35,11 +36,9 @@ home : List Device -> Html Msg
 home d = div []
     [
       header
-    , div [] [
-        text "status: "
-      , text ((toString (List.length d)) ++ " appliance" ++ (if (List.length d) == 1 then "" else "s"))
-      ]
-    -- , div [] [ text "power draw" ]
+    , h2 [] [ text "status" ]
+    , div [] [ text ((toString (List.length d)) ++ " appliance" ++ (if (List.length d) == 1 then "" else "s")) ]
+    , div [] [ text ("Power draw: " ++ (toString (List.sum (List.map (\d -> d.draw) (List.filter (\d -> d.running) d)))) ++ "W") ]
     , div [] [
         device_list d
       , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
@@ -86,7 +85,7 @@ add_device2 devices draw = div []
   , div [] [ text "Add Appliance" ]
   , label [] [
       text "Power Draw (watts): "
-    , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (toString draw) ] [ ]
+    , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (if draw > 0 then (toString draw) else "") ] [ ]
     ]
   , button [ onClick SubmitAddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
   , button [ onClick AddDevice, class "btn btn-lg btn-block btn-warning" ] [ text "Back" ]
@@ -112,6 +111,6 @@ view_device devices index =
 get : Int -> List Device -> Device
 get index list =
   case List.head (List.drop index list) of
-    Nothing -> { name = "INVALID", running = False }
+    Nothing -> { name = "INVALID", running = False, draw = 0 }
     Just device -> device
 

@@ -54,7 +54,7 @@ update msg model =
 
     SubmitAddDevice ->
       let
-        devices = (List.sortBy .name ({ name = model.current_device_name, running = False } :: model.devices))
+        devices = (List.sortBy .name ({ name = model.current_device_name, running = False, draw = model.current_device_draw } :: model.devices))
       in
         { model | current_device_name = "", current_device_draw = 0, current_device_address = "", devices = devices , page = Pages.home devices }
 
@@ -71,9 +71,7 @@ update msg model =
 toggle : Int -> Int -> Device -> Device
 toggle target index device =
   if index == target then
-    { name = device.name
-    , running = not device.running
-    }
+    { device | running = not device.running }
   else
     device
 
