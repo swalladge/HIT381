@@ -61,6 +61,9 @@ update msg model =
     ViewDevice index ->
       { model | page = Pages.view_device model.devices index }
 
+    EditDevice index ->
+      { model | page = Pages.edit_device model.devices index }
+
     ToggleDevice index ->
       let
         devices = (List.indexedMap (toggle index) model.devices)

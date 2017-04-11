@@ -15,6 +15,7 @@ type Msg
     | UpdateDraw String
     | SubmitAddDevice
     | ViewDevice Int
+    | EditDevice Int
     | ToggleDevice Int
 
 type alias Device =
@@ -120,6 +121,7 @@ view_device devices index =
       text (if device.running then "on" else "off")
     ]
   , button [ onClick (ToggleDevice index), class "btn btn-block btn-lg btn-primary" ] [ text (if device.running then "Switch off" else "Switch on") ]
+  , button [ onClick (EditDevice index), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
 
   , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
   ]
@@ -130,4 +132,18 @@ get index list =
   case List.head (List.drop index list) of
     Nothing -> { name = "INVALID", running = False, draw = 0 }
     Just device -> device
+
+edit_device : List Device -> Int -> Html Msg
+edit_device devices index =
+  let
+    device = get index devices
+  in
+    div []
+    [
+      header
+    , h2 [] [ text ("Edit " ++ device.name) ]
+    , p [] [ text "TODO: edit forms" ]
+    , button [ onClick <| ViewDevice index, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
+    , button [ onClick <| ViewDevice index, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
+    ]
 
