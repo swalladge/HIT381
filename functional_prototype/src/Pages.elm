@@ -23,11 +23,16 @@ type alias Device =
   , draw : Int
   }
 
-header = div [ class "centre" ] [ h1 [] [ text "Electricity Alert" ] ]
+name = "Smart Power"
+
+welcome_text = "Manage your smart appliances, view power usage, save power!"
+
+header = div [ class "centre" ] [ h1 [] [ text name ] ]
 
 welcome : List Device -> Html Msg
 welcome d = div []
-    [ h1 [ class "centre" ] [ text "Welcome to Electricity Alert!" ]
+    [ h1 [ class "centre" ] [ text <| "Welcome to " ++ name  ]
+    , p [] [ text welcome_text ]
     , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Get Started!" ]
     ]
 
