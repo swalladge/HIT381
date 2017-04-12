@@ -21,7 +21,7 @@ type alias Model =
 
 model : Model
 model =
-  (Model (Pages.welcome [])) [] "" "" 0
+  (Model (Pages.welcome)) [] "" "" 0
 
 
 -- UPDATE
@@ -30,7 +30,10 @@ update : Msg -> Model -> Model
 update msg model =
   case msg of
     Welcome ->
-      { model | page = Pages.welcome model.devices }
+      { model | page = Pages.welcome }
+
+    Setup ->
+      { model | page = Pages.setup }
 
     Home ->
       { model | page = Pages.home model.devices }

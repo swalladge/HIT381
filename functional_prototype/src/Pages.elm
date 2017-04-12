@@ -7,6 +7,7 @@ import Html.Events exposing (..)
 
 type Msg
     = Welcome
+    | Setup
     | Home
     | AddDevice
     | AddDevice2
@@ -30,12 +31,22 @@ welcome_text = "Manage your smart appliances, view power usage, save power!"
 
 header = div [ class "centre" ] [ h1 [] [ text name ] ]
 
-welcome : List Device -> Html Msg
-welcome d = div []
+welcome : Html Msg
+welcome = div []
     [ h1 [ class "centre" ] [ text <| "Welcome to " ++ name  ]
     , p [] [ text welcome_text ]
-    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Get Started!" ]
+    , button [ onClick Setup, class "btn btn-block btn-lg btn-primary" ] [ text "Get Started!" ]
     ]
+
+setup : Html Msg
+setup = div []
+    [ header
+    , p [] [ text "Setup - house location, etc. TODO" ]
+    , p [] [ text "Ignore for now." ]
+    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Enter" ]
+    , button [ onClick Welcome, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
+    ]
+
 
 
 home : List Device -> Html Msg
