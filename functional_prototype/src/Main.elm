@@ -2,26 +2,18 @@ import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
 
+import Types exposing (..)
 import Pages exposing (..)
 
 main =
   Html.beginnerProgram { model = model, view = view, update = update }
 
 
--- MODEL
-
-type alias Model =
-  { page : Html Msg
-  , devices : List Device
-  , current_device_name : String
-  , current_device_address : String
-  , current_device_draw : Int
-  }
-
+empty_device_form = DeviceForm "" "" 0
 
 model : Model
 model =
-  (Model (Pages.welcome)) [] "" "" 0
+  (Model (Pages.welcome)) [] empty_device_form
 
 
 -- UPDATE
@@ -39,27 +31,36 @@ update msg model =
       { model | page = Pages.home model.devices }
 
     AddDevice ->
-      { model | page = Pages.add_device model.devices model.current_device_name model.current_device_address }
+      { model | page = Pages.add_device model.devices model.device_form.name model.device_form.address }
 
     AddDevice2 ->
-      { model | page = Pages.add_device2 model.devices model.current_device_draw }
+      { model | page = Pages.add_device2 model.devices model.device_form.draw }
 
     UpdateName name ->
-      { model | current_device_name = name }
+      let
+        form = model.device_form
+      in
+        { model | device_form = { form | name = name } }
 
     UpdateAddress addr ->
-      { model | current_device_address = addr }
+      let
+        form = model.device_form
+      in
+        { model | device_form = { form | address = addr } }
 
     UpdateDraw draw ->
-      case String.toInt draw of
-        Err msg -> { model | current_device_draw = 0 }
-        Ok draw -> { model | current_device_draw = draw }
+      let
+          form = model.device_form
+      in
+        case String.toInt draw of
+          Err msg -> { model | device_form = { form | draw = 0 } }
+          Ok draw -> { model | device_form = { form | draw = draw } }
 
     SubmitAddDevice ->
       let
-        devices = (List.sortBy .name ({ name = model.current_device_name, running = False, draw = model.current_device_draw } :: model.devices))
+        devices = (List.sortBy .name ((Device model.device_form.name False model.device_form.draw) :: model.devices))
       in
-        { model | current_device_name = "", current_device_draw = 0, current_device_address = "", devices = devices , page = Pages.home devices }
+        { model | device_form = empty_device_form, devices = devices, page = Pages.home devices }
 
     ViewDevice index ->
       { model | page = Pages.view_device model.devices index }
@@ -80,11 +81,6 @@ toggle target index device =
     { device | running = not device.running }
   else
     device
-
-
-
-
-
 
 
 -- VIEW
