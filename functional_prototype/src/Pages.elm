@@ -28,28 +28,37 @@ setup = div []
     , button [ onClick Welcome, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
     ]
 
-settings : Html Msg
-settings = div []
+settings : Int -> Html Msg
+settings wl = div []
     [ header
     , h2 [] [ text "Settings" ]
     , p [] [ text "settings and such" ]
+    , label [] [
+        text "Alert when draw exceeds (watts): "
+        , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateWL, value <| toString wl ] [ ]
+      ]
     , button [ onClick Reset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset - clear everything" ]
     , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Back" ]
     ]
 
 
 
-home : List Device -> Html Msg
-home d =
+home : List Device -> Int -> Html Msg
+home d wl =
   let
       n_running = (List.length (List.filter (\a -> a.running) d))
       n         = (List.length d)
       draw      = (List.sum (List.map (\d -> d.draw) (List.filter (\d -> d.running) d)))
+      warning   = if wl > 0 && draw > wl then
+          p [] [ text <| "Warning, draw is greater than " ++ (toString wl) ++ "W!" ]
+        else
+          span [] []
   in
     div []
       [
         header
       , h2 [] [ text "Status" ]
+      , warning
       , div [] [ text ((toString n) ++ " appliance" ++ (if n == 1 then "" else "s") ++ " (" ++ (toString n_running) ++ " running)") ]
       , div [] [ text ("Power draw: " ++ (toString draw) ++ "W") ]
       , h2 [] [ text "Appliances" ]
@@ -60,8 +69,8 @@ home d =
       , button [ onClick Settings, class "btn btn-block btn-lg btn-warning" ] [ text "Settings" ]
       ]
 
-device_in_list : Int -> Device -> Html Msg
-device_in_list index device = div [ class "device-listing panel panel-warning", onClick (ViewDevice index)] [
+display_device : Device -> Html Msg
+display_device device = div [ class "device-listing panel panel-warning", onClick (ViewDevice device.id)] [
   div [ class "panel-heading" ] [
       text device.name
     , div [ class (if device.running then "status-icon on" else "status-icon off") ] [
@@ -76,7 +85,7 @@ device_list devices = div [] (
   if (List.length devices) == 0 then
     [ div [] [ text "no appliances registered yet" ] ]
   else
-    (List.indexedMap device_in_list devices)
+    (List.map display_device devices)
   )
 
 

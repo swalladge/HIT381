@@ -13,14 +13,23 @@
 
 
     <script src="bower_components/jquery/dist/jquery.min.js"></script>
-    <script src="bower_components/bootstrap/js/bootstrap.min.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script src="js/elm.js"></script>
   </head>
   <body>
   <script>
-    var storedState = localStorage.getItem('elm-power-save');
-    var startingState = storedState ? JSON.parse(storedState) : null;
-    var powermvc = Elm.Main.fullscreen(startingState);
+    var storedState;
+    var startingState;
+    var powermvc;
+    try {
+      storedState = localStorage.getItem('elm-power-save');
+      startingState = storedState ? JSON.parse(storedState) : null;
+      powermvc = Elm.Main.fullscreen(startingState);
+    } catch (e) {
+      localStorage.clear();
+      powermvc = Elm.Main.fullscreen(null);
+    }
+
     powermvc.ports.setStorage.subscribe(function(state) {
         localStorage.setItem('elm-power-save', JSON.stringify(state));
     });

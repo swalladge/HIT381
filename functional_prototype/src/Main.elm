@@ -15,6 +15,7 @@ new_model =
   , max_id = 0
   , device_form = empty_device_form
   , message = ""
+  , warning_level = 0
   }
 
 
@@ -35,7 +36,7 @@ init : Maybe StrippedModel -> ( Model, Cmd Msg )
 init savedModel =
   case savedModel of
     Nothing -> new_model ! []
-    Just {devices, max_id, device_form} -> Model (Pages.home devices) devices max_id device_form "" ! []
+    Just {devices, max_id, device_form, warning_level} -> Model (Pages.home devices warning_level) devices max_id device_form "" 0 ! []
 
 updateWithStorage : Msg -> Model -> ( Model, Cmd Msg )
 updateWithStorage msg model =
@@ -43,7 +44,7 @@ updateWithStorage msg model =
         newModel = update msg model
     in
         ( newModel
-        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form, message = "" } ]
+        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form, message = "", warning_level = newModel.warning_level } ]
         )
 
 
@@ -59,19 +60,30 @@ update msg model =
       { model | page = Pages.setup }
 
     Home ->
-      { model | message = "", page = Pages.home model.devices }
+      { model | message = "", page = Pages.home model.devices model.warning_level }
 
     Settings ->
-      { model | page = Pages.settings }
+      { model | page = Pages.settings model.warning_level }
+
+    UpdateWL wl ->
+      let
+        warning_level = case String.toInt wl of
+          Err msg -> 0
+          Ok w -> w
+      in
+        { model | warning_level = warning_level }
 
     Reset ->
       let
         _ = resetStorage True
       in
-        { new_model | page = Pages.home [] }
+        { new_model | page = Pages.home [] 0 }
 
     AddDevice ->
-          { model | page = Pages.add_device model.devices model.device_form.name model.device_form.address model.message }
+      let
+        device_form = empty_device_form
+      in
+        { model | device_form = device_form, page = Pages.add_device model.devices device_form.name device_form.address model.message }
 
     AddDevice2 ->
       let
@@ -107,13 +119,17 @@ update msg model =
       let
         devices = (List.sortBy .name ((Device model.max_id model.device_form.name False model.device_form.draw) :: model.devices))
       in
-        { model | max_id = model.max_id + 1, device_form = empty_device_form, devices = devices, page = Pages.home devices }
+        { model | max_id = model.max_id + 1, device_form = empty_device_form, devices = devices, page = Pages.home devices model.warning_level }
 
     ViewDevice id ->
       { model | page = Pages.view_device <| get_device model.devices id }
 
     EditDevice id ->
-      { model | page = Pages.edit_device "" <| get_device model.devices id }
+      let
+        device = get_device model.devices id
+        device_form = model.device_form
+      in
+        { model | page = Pages.edit_device "" device, device_form = { device_form | name = device.name, draw = device.draw } }
 
     -- on edit save
     SaveDevice id ->

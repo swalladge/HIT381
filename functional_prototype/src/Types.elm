@@ -11,6 +11,7 @@ type alias Model =
   , max_id : Int
   , device_form : DeviceForm
   , message : String
+  , warning_level : Int
   }
 
 type alias StrippedModel =
@@ -18,6 +19,7 @@ type alias StrippedModel =
   , max_id : Int
   , device_form : DeviceForm
   , message : String
+  , warning_level : Int
   }
 
 type alias DeviceForm =
@@ -44,6 +46,7 @@ type Msg
     | UpdateName String
     | UpdateAddress String
     | UpdateDraw String
+    | UpdateWL String
     | SubmitAddDevice
     | ViewDevice Int
     | EditDevice Int
