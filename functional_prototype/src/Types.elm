@@ -47,6 +47,7 @@ type Msg
     | SubmitAddDevice
     | ViewDevice Int
     | EditDevice Int
+    | SaveDevice Int
     | ToggleDevice Int
 
 empty_device_form : DeviceForm

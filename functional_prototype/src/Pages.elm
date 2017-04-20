@@ -49,7 +49,7 @@ home d =
     div []
       [
         header
-      , h2 [] [ text "status" ]
+      , h2 [] [ text "Status" ]
       , div [] [ text ((toString n) ++ " appliance" ++ (if n == 1 then "" else "s") ++ " (" ++ (toString n_running) ++ " running)") ]
       , div [] [ text ("Power draw: " ++ (toString draw) ++ "W") ]
       , h2 [] [ text "Appliances" ]
@@ -131,13 +131,24 @@ view_device device =
     , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
     ]
 
-edit_device : Device -> Html Msg
-edit_device device =
-    div []
-    [
-      header
-    , h2 [] [ text ("Edit " ++ device.name) ]
-    , p [] [ text "TODO: edit forms" ]
-    , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
-    , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
+edit_device : String -> Device -> Html Msg
+edit_device message device =
+  div []
+  [
+    header
+  , h2 [] [ text ("Edit " ++ device.name) ]
+  , if (String.length message) > 0 then
+      p [] [ text message ]
+    else
+      span [] []
+  , label [] [
+      text "Name: "
+    , input [ class "form-control", type_ "text", placeholder "Name", onInput UpdateName, value device.name ] [ ]
     ]
+  , label [] [
+    text "Power Draw (watts): "
+  , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (if device.draw > 0 then (toString device.draw) else "") ] [ ]
+  ]
+  , button [ onClick <| SaveDevice device.id, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
+  , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
+  ]

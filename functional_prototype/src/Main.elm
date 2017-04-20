@@ -113,22 +113,39 @@ update msg model =
       { model | page = Pages.view_device <| get_device model.devices id }
 
     EditDevice id ->
-      { model | page = Pages.edit_device <| get_device model.devices id }
+      { model | page = Pages.edit_device "" <| get_device model.devices id }
+
+    -- on edit save
+    SaveDevice id ->
+      let
+        (devices, message, page) = if (String.length model.device_form.name) /= 0 then
+          (List.map (save_device model.device_form id) model.devices, ""
+          , Pages.view_device )
+        else
+          (model.devices, "Name is required!", Pages.edit_device "Name is required!")
+      in
+        { model | message = message, page = page <| get_device devices id, devices = devices }
 
     ToggleDevice id ->
       let
-        devices = (List.indexedMap (toggle id) model.devices)
+        devices = (List.map (toggle id) model.devices)
       in
         { model | page = Pages.view_device <| get_device devices id, devices = devices }
 
 
-toggle : Int -> Int -> Device -> Device
-toggle target id device =
-  if id == target then
+toggle : Int -> Device -> Device
+toggle target device =
+  if device.id == target then
     { device | running = not device.running }
   else
     device
 
+save_device : DeviceForm -> Int -> Device -> Device
+save_device form target_id device =
+  if device.id == target_id then
+    { device | name = form.name, draw = form.draw }
+  else
+    device
 
 -- VIEW
 
