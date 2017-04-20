@@ -24,6 +24,9 @@
     powermvc.ports.setStorage.subscribe(function(state) {
         localStorage.setItem('elm-power-save', JSON.stringify(state));
     });
+    powermvc.ports.resetStorage.subscribe(function() {
+        localStorage.clear();
+    });
   </script>
   <noscript>
     <p>Javascript is required to test this functional prototype. Please enable javascript in your browser and reload the page.</p>

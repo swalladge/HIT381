@@ -34,6 +34,8 @@ type alias Device =
 type Msg
     = Welcome
     | Setup
+    | Settings
+    | Reset
     | Home
     | AddDevice
     | AddDevice2

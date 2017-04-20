@@ -28,6 +28,15 @@ setup = div []
     , button [ onClick Welcome, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
     ]
 
+settings : Html Msg
+settings = div []
+    [ header
+    , h2 [] [ text "Settings" ]
+    , p [] [ text "settings and such" ]
+    , button [ onClick Reset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset - clear everything" ]
+    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Back" ]
+    ]
+
 
 
 home : List Device -> Html Msg
@@ -48,6 +57,7 @@ home d =
           device_list d
         ]
       , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
+      , button [ onClick Settings, class "btn btn-block btn-lg btn-warning" ] [ text "Settings" ]
       ]
 
 device_in_list : Int -> Device -> Html Msg

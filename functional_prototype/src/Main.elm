@@ -28,6 +28,7 @@ main =
 
 
 port setStorage : StrippedModel -> Cmd msg
+port resetStorage : Bool -> Cmd msg
 
 init : Maybe StrippedModel -> ( Model, Cmd Msg )
 init savedModel =
@@ -58,6 +59,15 @@ update msg model =
 
     Home ->
       { model | page = Pages.home model.devices }
+
+    Settings ->
+      { model | page = Pages.settings }
+
+    Reset ->
+      let
+        _ = resetStorage True
+      in
+        { new_model | page = Pages.home [] }
 
     AddDevice ->
       { model | page = Pages.add_device model.devices model.device_form.name model.device_form.address }
