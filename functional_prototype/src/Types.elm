@@ -12,6 +12,12 @@ type alias Model =
   , device_form : DeviceForm
   }
 
+type alias StrippedModel =
+  { devices : List Device
+  , max_id : Int
+  , device_form : DeviceForm
+  }
+
 type alias DeviceForm =
   { name : String
   , address : String
@@ -45,3 +51,4 @@ empty_device_form =
   , address = ""
   , draw = 0
   }
+

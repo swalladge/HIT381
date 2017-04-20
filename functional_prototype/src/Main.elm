@@ -1,3 +1,5 @@
+port module Main exposing (..)
+
 import Html exposing (..)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onInput)
@@ -6,17 +8,42 @@ import Types exposing (..)
 import Pages exposing (..)
 import Functions exposing (..)
 
-main =
-  Html.beginnerProgram { model = model, view = view, update = update }
-
-
-model : Model
-model =
+new_model : Model
+new_model =
   { page = Pages.welcome
   , devices = []
   , max_id = 0
   , device_form = empty_device_form
   }
+
+
+main : Program (Maybe StrippedModel) Model Msg
+main =
+    Html.programWithFlags
+        { init = init
+        , view = view
+        , update = updateWithStorage
+        , subscriptions = \_ -> Sub.none
+        }
+
+
+port setStorage : StrippedModel -> Cmd msg
+
+init : Maybe StrippedModel -> ( Model, Cmd Msg )
+init savedModel =
+  case savedModel of
+    Nothing -> new_model ! []
+    Just {devices, max_id, device_form} -> Model (Pages.home devices) devices max_id device_form ! []
+
+updateWithStorage : Msg -> Model -> ( Model, Cmd Msg )
+updateWithStorage msg model =
+    let
+        newModel = update msg model
+    in
+        ( newModel
+        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form } ]
+        )
+
 
 -- UPDATE
 

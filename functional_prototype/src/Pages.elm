@@ -127,4 +127,3 @@ edit_device device =
     , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
     , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
     ]
-
