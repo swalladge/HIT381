@@ -14,6 +14,7 @@ new_model =
   , devices = []
   , max_id = 0
   , device_form = empty_device_form
+  , message = ""
   }
 
 
@@ -34,7 +35,7 @@ init : Maybe StrippedModel -> ( Model, Cmd Msg )
 init savedModel =
   case savedModel of
     Nothing -> new_model ! []
-    Just {devices, max_id, device_form} -> Model (Pages.home devices) devices max_id device_form ! []
+    Just {devices, max_id, device_form} -> Model (Pages.home devices) devices max_id device_form "" ! []
 
 updateWithStorage : Msg -> Model -> ( Model, Cmd Msg )
 updateWithStorage msg model =
@@ -42,7 +43,7 @@ updateWithStorage msg model =
         newModel = update msg model
     in
         ( newModel
-        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form } ]
+        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form, message = "" } ]
         )
 
 
@@ -58,7 +59,7 @@ update msg model =
       { model | page = Pages.setup }
 
     Home ->
-      { model | page = Pages.home model.devices }
+      { model | message = "", page = Pages.home model.devices }
 
     Settings ->
       { model | page = Pages.settings }
@@ -70,10 +71,17 @@ update msg model =
         { new_model | page = Pages.home [] }
 
     AddDevice ->
-      { model | page = Pages.add_device model.devices model.device_form.name model.device_form.address }
+          { model | page = Pages.add_device model.devices model.device_form.name model.device_form.address model.message }
 
     AddDevice2 ->
-      { model | page = Pages.add_device2 model.devices model.device_form.draw }
+      let
+          (message, page) = if (String.length model.device_form.name) == 0 then
+              let msg = "Name is required!"
+              in (msg, Pages.add_device model.devices model.device_form.name model.device_form.address msg)
+            else
+              ("", Pages.add_device2 model.devices model.device_form.draw )
+      in
+          { model | page = page, message = message}
 
     UpdateName name ->
       let

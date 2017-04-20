@@ -10,12 +10,14 @@ type alias Model =
   , devices : List Device
   , max_id : Int
   , device_form : DeviceForm
+  , message : String
   }
 
 type alias StrippedModel =
   { devices : List Device
   , max_id : Int
   , device_form : DeviceForm
+  , message : String
   }
 
 type alias DeviceForm =

@@ -80,11 +80,15 @@ device_list devices = div [] (
   )
 
 
-add_device : List Device -> String -> String -> Html Msg
-add_device devices name addr = div []
+add_device : List Device -> String -> String -> String -> Html Msg
+add_device devices name addr message = div []
   [
     header
   , div [] [ text "Add Appliance" ]
+  , if (String.length message) /= 0 then
+      div [] [ text message ]
+    else
+      span [] []
   , label [] [
       text "Name: "
     , input [ class "form-control", type_ "text", placeholder "Name", onInput UpdateName, value name ] [ ]
