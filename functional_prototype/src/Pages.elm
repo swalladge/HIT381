@@ -101,41 +101,30 @@ add_device2 devices draw = div []
   ]
 
 
-view_device : List Device -> Int -> Html Msg
-view_device devices index =
-  let device = get index devices
-  in div []
-  [
-    header
-  , h2 [] [ text ("Manage " ++ device.name) ]
-  , div [] [ text ("Power draw when running: " ++ (toString device.draw) ++ "W") ]
-  , div [ class (if device.running then "well on" else "well off") ] [
-      text (if device.running then "on" else "off")
+view_device : Device -> Html Msg
+view_device device =
+  div []
+    [
+      header
+    , h2 [] [ text ("Manage " ++ device.name) ]
+    , div [] [ text ("Power draw when running: " ++ (toString device.draw) ++ "W") ]
+    , div [ class (if device.running then "well on" else "well off") ] [
+        text (if device.running then "on" else "off")
+      ]
+    , button [ onClick (ToggleDevice device.id), class "btn btn-block btn-lg btn-primary" ] [ text (if device.running then "Switch off" else "Switch on") ]
+    , button [ onClick (EditDevice device.id), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
+
+    , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
     ]
-  , button [ onClick (ToggleDevice index), class "btn btn-block btn-lg btn-primary" ] [ text (if device.running then "Switch off" else "Switch on") ]
-  , button [ onClick (EditDevice index), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
 
-  , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
-  ]
-
-
-get : Int -> List Device -> Device
-get index list =
-  case List.head (List.drop index list) of
-    Nothing -> { name = "INVALID", running = False, draw = 0 }
-    Just device -> device
-
-edit_device : List Device -> Int -> Html Msg
-edit_device devices index =
-  let
-    device = get index devices
-  in
+edit_device : Device -> Html Msg
+edit_device device =
     div []
     [
       header
     , h2 [] [ text ("Edit " ++ device.name) ]
     , p [] [ text "TODO: edit forms" ]
-    , button [ onClick <| ViewDevice index, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
-    , button [ onClick <| ViewDevice index, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
+    , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
+    , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
     ]
 

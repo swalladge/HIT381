@@ -8,9 +8,9 @@ import Html exposing (..)
 type alias Model =
   { page : Html Msg
   , devices : List Device
+  , max_id : Int
   , device_form : DeviceForm
   }
-
 
 type alias DeviceForm =
   { name : String
@@ -19,7 +19,8 @@ type alias DeviceForm =
   }
 
 type alias Device =
-  { name : String
+  { id : Int
+  , name : String
   , running : Bool
   , draw : Int
   }
@@ -38,3 +39,9 @@ type Msg
     | EditDevice Int
     | ToggleDevice Int
 
+empty_device_form : DeviceForm
+empty_device_form =
+  { name = ""
+  , address = ""
+  , draw = 0
+  }

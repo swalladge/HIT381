@@ -4,17 +4,19 @@ import Html.Events exposing (onInput)
 
 import Types exposing (..)
 import Pages exposing (..)
+import Functions exposing (..)
 
 main =
   Html.beginnerProgram { model = model, view = view, update = update }
 
 
-empty_device_form = DeviceForm "" "" 0
-
 model : Model
 model =
-  (Model (Pages.welcome)) [] empty_device_form
-
+  { page = Pages.welcome
+  , devices = []
+  , max_id = 0
+  , device_form = empty_device_form
+  }
 
 -- UPDATE
 
@@ -58,26 +60,26 @@ update msg model =
 
     SubmitAddDevice ->
       let
-        devices = (List.sortBy .name ((Device model.device_form.name False model.device_form.draw) :: model.devices))
+        devices = (List.sortBy .name ((Device model.max_id model.device_form.name False model.device_form.draw) :: model.devices))
       in
-        { model | device_form = empty_device_form, devices = devices, page = Pages.home devices }
+        { model | max_id = model.max_id + 1, device_form = empty_device_form, devices = devices, page = Pages.home devices }
 
-    ViewDevice index ->
-      { model | page = Pages.view_device model.devices index }
+    ViewDevice id ->
+      { model | page = Pages.view_device <| get_device model.devices id }
 
-    EditDevice index ->
-      { model | page = Pages.edit_device model.devices index }
+    EditDevice id ->
+      { model | page = Pages.edit_device <| get_device model.devices id }
 
-    ToggleDevice index ->
+    ToggleDevice id ->
       let
-        devices = (List.indexedMap (toggle index) model.devices)
+        devices = (List.indexedMap (toggle id) model.devices)
       in
-        { model | page = Pages.view_device devices index, devices = devices }
+        { model | page = Pages.view_device <| get_device devices id, devices = devices }
 
 
 toggle : Int -> Int -> Device -> Device
-toggle target index device =
-  if index == target then
+toggle target id device =
+  if id == target then
     { device | running = not device.running }
   else
     device
@@ -87,5 +89,5 @@ toggle target index device =
 
 view : Model -> Html Msg
 view model =
-  div [ class "container" ] [ model.page ]
+    div [ class "container" ] [ model.page ]
 
