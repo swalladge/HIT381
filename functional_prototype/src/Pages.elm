@@ -16,6 +16,7 @@ welcome : Html Msg
 welcome = div []
     [ h1 [ class "centre" ] [ text <| "Welcome to " ++ name  ]
     , p [] [ text welcome_text ]
+    , hr [] []
     , button [ onClick Setup, class "btn btn-block btn-lg btn-primary" ] [ text "Get Started!" ]
     ]
 
@@ -24,6 +25,7 @@ setup = div []
     [ header
     , p [] [ text "Setup - house location, etc. TODO" ]
     , p [] [ text "Ignore for now." ]
+    , hr [] []
     , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Enter" ]
     , button [ onClick Welcome, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
     ]
@@ -32,13 +34,14 @@ settings : Int -> Html Msg
 settings wl = div []
     [ header
     , h2 [] [ text "Settings" ]
-    , p [] [ text "settings and such" ]
+    , p [] [ text "Settings and such. Settings are saved instantly when you modify them." ]
     , label [] [
         text "Alert when draw exceeds (watts): "
         , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateWL, value <| toString wl ] [ ]
       ]
+    , hr [] []
     , button [ onClick ConfirmReset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset" ]
-    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Back" ]
+    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Return" ]
     ]
 
 
@@ -65,12 +68,13 @@ home d wl =
       , div [] [
           device_list d
         ]
+      , hr [] []
       , button [ onClick <| AddDevice True, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
       , button [ onClick Settings, class "btn btn-block btn-lg btn-warning" ] [ text "Settings" ]
       ]
 
 display_device : Device -> Html Msg
-display_device device = div [ class "device-listing panel panel-warning", onClick (ViewDevice device.id)] [
+display_device device = div [ class "device-listing panel panel-default", onClick (ViewDevice device.id)] [
   div [ class "panel-heading" ] [
       text device.name
     , div [ class (if device.running then "status-icon on" else "status-icon off") ] [
@@ -93,7 +97,7 @@ add_device : List Device -> String -> String -> String -> Html Msg
 add_device devices name addr message = div []
   [
     header
-  , div [] [ text "Add Appliance" ]
+  , h2 [] [ text "Add Appliance" ]
   , if (String.length message) /= 0 then
       div [] [ text message ]
     else
@@ -106,6 +110,7 @@ add_device devices name addr message = div []
       text "Address: "
     , input [ class "form-control", type_ "text", placeholder "https://10.0.0.1", onInput UpdateAddress, value addr ] []
     ]
+  , hr [] []
   , button [ onClick AddDevice2, class "btn btn-block btn-lg btn-primary" ] [ text "Next" ]
   , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back to Home" ]
   ]
@@ -114,7 +119,7 @@ add_device2 : List Device -> Int -> String -> Html Msg
 add_device2 devices draw msg = div []
   [
     header
-  , div [] [ text "Add Appliance" ]
+  , h2 [] [ text "Add Appliance" ]
   , if (String.length msg) > 0 then
       p [] [ text msg ]
     else
@@ -123,6 +128,7 @@ add_device2 devices draw msg = div []
       text "Power Draw (watts): "
     , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (if draw > 0 then (toString draw) else "") ] [ ]
     ]
+  , hr [] []
   , button [ onClick SubmitAddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
   , button [ onClick <| AddDevice False, class "btn btn-lg btn-block btn-warning" ] [ text "Back" ]
   ]
@@ -135,6 +141,7 @@ confirm_reset =
       header
     , h2 [] [ text "Reset" ]
     , b [] [ text "Are you sure? This will remove all your settings and revert the app to a freshly installed state." ]
+    , hr [] []
     , button [ onClick Reset, class "btn btn-block btn-lg btn-danger" ] [ text "Confirm Reset" ]
     , button [ onClick Settings, class "btn btn-block btn-lg btn-primary" ] [ text "Cancel" ]
     ]
@@ -149,6 +156,7 @@ view_device device =
     , div [ class (if device.running then "well on" else "well off") ] [
         text (if device.running then "on" else "off")
       ]
+    , hr [] []
     , button [ onClick (ToggleDevice device.id), class "btn btn-block btn-lg btn-primary" ] [ text (if device.running then "Switch off" else "Switch on") ]
     , button [ onClick (EditDevice device.id), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
 
@@ -173,6 +181,7 @@ edit_device message device =
     text "Power Draw (watts): "
   , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (if device.draw > 0 then (toString device.draw) else "") ] [ ]
   ]
+  , hr [] []
   , button [ onClick <| SaveDevice device.id, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
   , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
   ]

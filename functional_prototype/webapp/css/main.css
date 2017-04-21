@@ -42,3 +42,7 @@ label {
   background-image: none;
   color: #a94442;
 }
+
+.device-listing {
+  margin-bottom: 5px;
+}
