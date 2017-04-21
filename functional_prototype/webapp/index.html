@@ -27,6 +27,8 @@
       powermvc = Elm.Main.fullscreen(startingState);
     } catch (e) {
       localStorage.clear();
+      storedState = localStorage.getItem('elm-power-save');
+      startingState = storedState ? JSON.parse(storedState) : null;
       powermvc = Elm.Main.fullscreen(null);
     }
 

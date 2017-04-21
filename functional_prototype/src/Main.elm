@@ -16,6 +16,7 @@ new_model =
   , device_form = empty_device_form
   , message = ""
   , warning_level = 0
+  , setup_complete = False
   }
 
 
@@ -36,7 +37,7 @@ init : Maybe StrippedModel -> ( Model, Cmd Msg )
 init savedModel =
   case savedModel of
     Nothing -> new_model ! []
-    Just {devices, max_id, device_form, warning_level} -> Model (Pages.home devices warning_level) devices max_id device_form "" 0 ! []
+    Just {devices, max_id, device_form, warning_level, setup_complete} -> Model (if setup_complete then Pages.home devices warning_level else Pages.welcome) devices max_id device_form "" warning_level setup_complete ! []
 
 updateWithStorage : Msg -> Model -> ( Model, Cmd Msg )
 updateWithStorage msg model =
@@ -44,7 +45,7 @@ updateWithStorage msg model =
         (newModel, cmds) = update msg model
     in
         ( newModel
-        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form, message = "", warning_level = newModel.warning_level }, cmds ]
+        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form, message = "", warning_level = newModel.warning_level, setup_complete = newModel.setup_complete }, cmds ]
         )
 
 
@@ -60,7 +61,7 @@ update msg model =
       { model | page = Pages.setup } ! []
 
     Home ->
-      { model | message = "", page = Pages.home model.devices model.warning_level } ! []
+      { model | message = "", page = Pages.home model.devices model.warning_level, setup_complete = True } ! []
 
     Settings ->
       { model | page = Pages.settings model.warning_level } ! []

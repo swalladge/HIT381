@@ -12,6 +12,7 @@ type alias Model =
   , device_form : DeviceForm
   , message : String
   , warning_level : Int
+  , setup_complete : Bool
   }
 
 type alias StrippedModel =
@@ -20,6 +21,7 @@ type alias StrippedModel =
   , device_form : DeviceForm
   , message : String
   , warning_level : Int
+  , setup_complete : Bool
   }
 
 type alias DeviceForm =
