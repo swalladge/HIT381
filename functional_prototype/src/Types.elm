@@ -43,7 +43,7 @@ type Msg
     | Settings
     | Reset
     | Home
-    | AddDevice
+    | AddDevice Bool
     | AddDevice2
     | UpdateName String
     | UpdateAddress String
@@ -60,6 +60,6 @@ empty_device_form : DeviceForm
 empty_device_form =
   { name = ""
   , address = ""
-  , draw = 0
+  , draw = -1
   }
 

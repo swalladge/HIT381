@@ -77,9 +77,9 @@ update msg model =
     Reset ->
         { new_model | page = Pages.welcome } ! [ resetStorage True ]
 
-    AddDevice ->
+    AddDevice reset ->
       let
-        device_form = empty_device_form
+        device_form = if reset then empty_device_form else model.device_form
       in
         { model | device_form = device_form, page = Pages.add_device model.devices device_form.name device_form.address model.message } ! []
 
@@ -89,7 +89,7 @@ update msg model =
               let msg = "Name is required!"
               in (msg, Pages.add_device model.devices model.device_form.name model.device_form.address msg)
             else
-              ("", Pages.add_device2 model.devices model.device_form.draw )
+              ("", Pages.add_device2 model.devices model.device_form.draw "")
       in
           { model | page = page, message = message} ! []
 
@@ -110,14 +110,20 @@ update msg model =
           form = model.device_form
       in
         case String.toInt draw of
-          Err msg -> { model | device_form = { form | draw = 0 } } ! []
+          Err msg -> { model | device_form = { form | draw = -1 } } ! []
           Ok draw -> { model | device_form = { form | draw = draw } } ! []
 
     SubmitAddDevice ->
       let
-        devices = (List.sortBy .name ((Device model.max_id model.device_form.name False model.device_form.draw) :: model.devices))
+        (page, devices, device_form) = if (not (isPositiveInt model.device_form.draw)) then
+              let msg = "Draw must be a positive integer!"
+              in (Pages.add_device2 model.devices model.device_form.draw msg,
+                  model.devices, model.device_form)
+          else
+            let d = (List.sortBy .name ((Device model.max_id model.device_form.name False model.device_form.draw) :: model.devices))
+            in (Pages.home d model.warning_level, d, empty_device_form)
       in
-        { model | max_id = model.max_id + 1, device_form = empty_device_form, devices = devices, page = Pages.home devices model.warning_level } ! []
+        { model | max_id = model.max_id + 1, device_form = device_form, devices = devices, page = page } ! []
 
     ViewDevice id ->
       { model | page = Pages.view_device <| get_device model.devices id } ! []

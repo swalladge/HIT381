@@ -65,7 +65,7 @@ home d wl =
       , div [] [
           device_list d
         ]
-      , button [ onClick AddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
+      , button [ onClick <| AddDevice True, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
       , button [ onClick Settings, class "btn btn-block btn-lg btn-warning" ] [ text "Settings" ]
       ]
 
@@ -110,17 +110,21 @@ add_device devices name addr message = div []
   , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back to Home" ]
   ]
 
-add_device2 : List Device -> Int -> Html Msg
-add_device2 devices draw = div []
+add_device2 : List Device -> Int -> String -> Html Msg
+add_device2 devices draw msg = div []
   [
     header
   , div [] [ text "Add Appliance" ]
+  , if (String.length msg) > 0 then
+      p [] [ text msg ]
+    else
+      span [] []
   , label [] [
       text "Power Draw (watts): "
     , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (if draw > 0 then (toString draw) else "") ] [ ]
     ]
   , button [ onClick SubmitAddDevice, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
-  , button [ onClick AddDevice, class "btn btn-lg btn-block btn-warning" ] [ text "Back" ]
+  , button [ onClick <| AddDevice False, class "btn btn-lg btn-block btn-warning" ] [ text "Back" ]
   ]
 
 
