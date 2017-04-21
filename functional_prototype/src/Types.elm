@@ -54,6 +54,7 @@ type Msg
     | EditDevice Int
     | SaveDevice Int
     | ToggleDevice Int
+    | ConfirmReset
 
 empty_device_form : DeviceForm
 empty_device_form =

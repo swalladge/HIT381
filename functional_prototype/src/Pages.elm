@@ -37,7 +37,7 @@ settings wl = div []
         text "Alert when draw exceeds (watts): "
         , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateWL, value <| toString wl ] [ ]
       ]
-    , button [ onClick Reset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset - clear everything" ]
+    , button [ onClick ConfirmReset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset" ]
     , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Back" ]
     ]
 
@@ -123,6 +123,17 @@ add_device2 devices draw = div []
   , button [ onClick AddDevice, class "btn btn-lg btn-block btn-warning" ] [ text "Back" ]
   ]
 
+
+confirm_reset : Html Msg
+confirm_reset =
+  div []
+    [
+      header
+    , h2 [] [ text "Reset" ]
+    , b [] [ text "Are you sure? This will remove all your settings and revert the app to a freshly installed state." ]
+    , button [ onClick Reset, class "btn btn-block btn-lg btn-danger" ] [ text "Confirm Reset" ]
+    , button [ onClick Settings, class "btn btn-block btn-lg btn-primary" ] [ text "Cancel" ]
+    ]
 
 view_device : Device -> Html Msg
 view_device device =

@@ -146,6 +146,9 @@ update msg model =
       in
         { model | page = Pages.view_device <| get_device devices id, devices = devices } ! []
 
+    ConfirmReset ->
+        { model | page = Pages.confirm_reset } ! []
+
 
 toggle : Int -> Device -> Device
 toggle target device =
