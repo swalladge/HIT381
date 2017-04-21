@@ -138,11 +138,13 @@ update msg model =
     -- on edit save
     SaveDevice id ->
       let
-        (devices, message, page) = if (String.length model.device_form.name) /= 0 then
+        (devices, message, page) = if (String.length model.device_form.name) == 0 then
+          (model.devices, "Name is required!", Pages.edit_device "Name is required!")
+        else if (not <| isPositiveInt model.device_form.draw) then
+          (model.devices, "Draw must be a positive integer!", Pages.edit_device "Draw must be a positive integer!")
+        else
           (List.map (save_device model.device_form id) model.devices, ""
           , Pages.view_device )
-        else
-          (model.devices, "Name is required!", Pages.edit_device "Name is required!")
       in
         { model | message = message, page = page <| get_device devices id, devices = devices } ! []
 
