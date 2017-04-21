@@ -41,29 +41,29 @@ init savedModel =
 updateWithStorage : Msg -> Model -> ( Model, Cmd Msg )
 updateWithStorage msg model =
     let
-        newModel = update msg model
+        (newModel, cmds) = update msg model
     in
         ( newModel
-        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form, message = "", warning_level = newModel.warning_level } ]
+        , Cmd.batch [ setStorage { devices = newModel.devices, max_id = newModel.max_id, device_form = newModel.device_form, message = "", warning_level = newModel.warning_level }, cmds ]
         )
 
 
 -- UPDATE
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> (Model, Cmd Msg)
 update msg model =
   case msg of
     Welcome ->
-      { model | page = Pages.welcome }
+      { model | page = Pages.welcome } ! []
 
     Setup ->
-      { model | page = Pages.setup }
+      { model | page = Pages.setup } ! []
 
     Home ->
-      { model | message = "", page = Pages.home model.devices model.warning_level }
+      { model | message = "", page = Pages.home model.devices model.warning_level } ! []
 
     Settings ->
-      { model | page = Pages.settings model.warning_level }
+      { model | page = Pages.settings model.warning_level } ! []
 
     UpdateWL wl ->
       let
@@ -71,19 +71,16 @@ update msg model =
           Err msg -> 0
           Ok w -> w
       in
-        { model | warning_level = warning_level }
+        { model | warning_level = warning_level } ! []
 
     Reset ->
-      let
-        _ = resetStorage True
-      in
-        { new_model | page = Pages.home [] 0 }
+        { new_model | page = Pages.welcome } ! [ resetStorage True ]
 
     AddDevice ->
       let
         device_form = empty_device_form
       in
-        { model | device_form = device_form, page = Pages.add_device model.devices device_form.name device_form.address model.message }
+        { model | device_form = device_form, page = Pages.add_device model.devices device_form.name device_form.address model.message } ! []
 
     AddDevice2 ->
       let
@@ -93,43 +90,43 @@ update msg model =
             else
               ("", Pages.add_device2 model.devices model.device_form.draw )
       in
-          { model | page = page, message = message}
+          { model | page = page, message = message} ! []
 
     UpdateName name ->
       let
         form = model.device_form
       in
-        { model | device_form = { form | name = name } }
+        { model | device_form = { form | name = name } } ! []
 
     UpdateAddress addr ->
       let
         form = model.device_form
       in
-        { model | device_form = { form | address = addr } }
+        { model | device_form = { form | address = addr } } ! []
 
     UpdateDraw draw ->
       let
           form = model.device_form
       in
         case String.toInt draw of
-          Err msg -> { model | device_form = { form | draw = 0 } }
-          Ok draw -> { model | device_form = { form | draw = draw } }
+          Err msg -> { model | device_form = { form | draw = 0 } } ! []
+          Ok draw -> { model | device_form = { form | draw = draw } } ! []
 
     SubmitAddDevice ->
       let
         devices = (List.sortBy .name ((Device model.max_id model.device_form.name False model.device_form.draw) :: model.devices))
       in
-        { model | max_id = model.max_id + 1, device_form = empty_device_form, devices = devices, page = Pages.home devices model.warning_level }
+        { model | max_id = model.max_id + 1, device_form = empty_device_form, devices = devices, page = Pages.home devices model.warning_level } ! []
 
     ViewDevice id ->
-      { model | page = Pages.view_device <| get_device model.devices id }
+      { model | page = Pages.view_device <| get_device model.devices id } ! []
 
     EditDevice id ->
       let
         device = get_device model.devices id
         device_form = model.device_form
       in
-        { model | page = Pages.edit_device "" device, device_form = { device_form | name = device.name, draw = device.draw } }
+        { model | page = Pages.edit_device "" device, device_form = { device_form | name = device.name, draw = device.draw } } ! []
 
     -- on edit save
     SaveDevice id ->
@@ -140,13 +137,13 @@ update msg model =
         else
           (model.devices, "Name is required!", Pages.edit_device "Name is required!")
       in
-        { model | message = message, page = page <| get_device devices id, devices = devices }
+        { model | message = message, page = page <| get_device devices id, devices = devices } ! []
 
     ToggleDevice id ->
       let
         devices = (List.map (toggle id) model.devices)
       in
-        { model | page = Pages.view_device <| get_device devices id, devices = devices }
+        { model | page = Pages.view_device <| get_device devices id, devices = devices } ! []
 
 
 toggle : Int -> Device -> Device
