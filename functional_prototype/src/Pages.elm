@@ -38,9 +38,10 @@ settings wl = div []
     , label [] [
         text "Alert when consumption exceeds (Watts): "
         , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateWL, value <| toString wl ] [ ]
+        , p [] [ text "0 = disable alert" ]
       ]
     , hr [] []
-    , button [ onClick ConfirmReset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset" ]
+    , button [ onClick ConfirmReset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset App" ]
     , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Return" ]
     ]
 
@@ -90,7 +91,7 @@ display_device device = div [ class "device-listing panel panel-default", onClic
 device_list : List Device -> Html Msg
 device_list devices = div [] (
   if (List.length devices) == 0 then
-    [ div [] [ text "No appliances registered yet. Click the button below to add one!" ] ]
+    [ div [] [ text "No smart appliances connected yet. Click the button below to add one!" ] ]
   else
     (List.map display_device devices)
   )
@@ -101,18 +102,19 @@ add_device devices name addr message = div []
   [
     header
   , h2 [] [ text "Add Appliance" ]
+  , p [] [ text "Connect a smart appliance to manage it from this app." ]
   , if (String.length message) /= 0 then
       div [ class "alert alert-warning" ] [ text message ]
     else
       span [] []
   , label [] [
       text "Name: "
-    , input [ class "form-control", type_ "text", placeholder "Name", onInput UpdateName, value name ] [ ]
+    , input [ class "form-control", type_ "text", placeholder "Kitchen Light", onInput UpdateName, value name ] [ ]
     ]
-  , hr [] []
-  , button [ onClick AddDevice2, class "btn btn-block btn-lg btn-primary" ] [ text "Next" ]
-  , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back to Home" ]
-  ]
+    , hr [] []
+    , button [ onClick AddDevice2, class "btn btn-block btn-lg btn-primary" ] [ text "Next" ]
+    , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back to Home" ]
+    ]
 
 add_device2 : List Device -> Int -> String -> Html Msg
 add_device2 devices draw msg = div []
@@ -139,7 +141,7 @@ confirm_reset =
     [
       header
     , h2 [] [ text "Reset" ]
-    , b [] [ text "Are you sure? This will remove all your settings and revert the app to a freshly installed state." ]
+    , b [] [ text "Are you sure? This will remove all your settings and connected appliances." ]
     , hr [] []
     , button [ onClick Reset, class "btn btn-block btn-lg btn-danger" ] [ text "Confirm Reset" ]
     , button [ onClick Settings, class "btn btn-block btn-lg btn-primary" ] [ text "Cancel" ]

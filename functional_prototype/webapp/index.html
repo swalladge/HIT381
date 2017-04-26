@@ -3,7 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="author" content="Samuel Walladge">
     <title>Smart Power</title>
 
@@ -26,9 +29,9 @@
       startingState = storedState ? JSON.parse(storedState) : null;
       powermvc = Elm.Main.fullscreen(startingState);
     } catch (e) {
+      // if it was an error, it was most likely because localstorage is corrupt
+      // clear it and restart
       localStorage.clear();
-      storedState = localStorage.getItem('elm-power-save');
-      startingState = storedState ? JSON.parse(storedState) : null;
       powermvc = Elm.Main.fullscreen(null);
     }
 
