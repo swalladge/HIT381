@@ -109,10 +109,6 @@ add_device devices name addr message = div []
       text "Name: "
     , input [ class "form-control", type_ "text", placeholder "Name", onInput UpdateName, value name ] [ ]
     ]
-  , label [] [
-      text "Address: "
-    , input [ class "form-control", type_ "text", placeholder "https://10.0.0.1", onInput UpdateAddress, value addr ] []
-    ]
   , hr [] []
   , button [ onClick AddDevice2, class "btn btn-block btn-lg btn-primary" ] [ text "Next" ]
   , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back to Home" ]
