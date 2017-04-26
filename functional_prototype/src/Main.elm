@@ -116,7 +116,7 @@ update msg model =
     SubmitAddDevice ->
       let
         (page, devices, device_form) = if (not (isPositiveInt model.device_form.draw)) then
-              let msg = "Draw must be a positive integer!"
+              let msg = "Power consumption must be a positive integer!"
               in (Pages.add_device2 model.devices model.device_form.draw msg,
                   model.devices, model.device_form)
           else

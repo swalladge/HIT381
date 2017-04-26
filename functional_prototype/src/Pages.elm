@@ -23,8 +23,8 @@ welcome = div []
 setup : Html Msg
 setup = div []
     [ header
-    , p [] [ text "Setup - house location, etc. TODO" ]
-    , p [] [ text "Ignore for now." ]
+    , p [] [ text "This screen is where quick-start initial settings would be entered, such as server connections, gps location of the house for use in alerts, etc." ]
+    , p [] [ text "Ignore for now - go ahead and try out the interface! :)" ]
     , hr [] []
     , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Enter" ]
     , button [ onClick Welcome, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
@@ -34,9 +34,9 @@ settings : Int -> Html Msg
 settings wl = div []
     [ header
     , h2 [] [ text "Settings" ]
-    , p [] [ text "Settings and such. Settings are saved instantly when you modify them." ]
+    , p [] [ text "Settings are saved as you modify them." ]
     , label [] [
-        text "Alert when draw exceeds (watts): "
+        text "Alert when consumption exceeds (Watts): "
         , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateWL, value <| toString wl ] [ ]
       ]
     , hr [] []
@@ -52,8 +52,9 @@ home d wl =
       n_running = (List.length (List.filter (\a -> a.running) d))
       n         = (List.length d)
       draw      = (List.sum (List.map (\d -> d.draw) (List.filter (\d -> d.running) d)))
-      warning   = if wl > 0 && draw > wl then
-          p [] [ text <| "Warning, draw is greater than " ++ (toString wl) ++ "W!" ]
+      isWarning   = if wl > 0 && draw > wl then True else False
+      warning   = if isWarning then
+          p [] [ text <| "(greater than " ++ (toString wl) ++ "W!)" ]
         else
           span [] []
   in
@@ -61,9 +62,11 @@ home d wl =
       [
         header
       , h2 [] [ text "Status" ]
-      , warning
+      , div [ class <| "alert alert-" ++ (if isWarning then "warning" else "success") ]
+        [ text ("Current power consumption: " ++ (toString draw) ++ "W")
+        , warning
+        ]
       , div [] [ text ((toString n) ++ " appliance" ++ (if n == 1 then "" else "s") ++ " (" ++ (toString n_running) ++ " running)") ]
-      , div [] [ text ("Power draw: " ++ (toString draw) ++ "W") ]
       , h2 [] [ text "Appliances" ]
       , div [] [
           device_list d
@@ -75,7 +78,7 @@ home d wl =
 
 display_device : Device -> Html Msg
 display_device device = div [ class "device-listing panel panel-default", onClick (ViewDevice device.id)] [
-  div [ class "panel-heading" ] [
+  div [ class "panel-heading", style [("cursor", "pointer")] ] [
       text device.name
     , div [ class (if device.running then "status-icon on" else "status-icon off") ] [
         text (if device.running then "on" else "off")
@@ -87,7 +90,7 @@ display_device device = div [ class "device-listing panel panel-default", onClic
 device_list : List Device -> Html Msg
 device_list devices = div [] (
   if (List.length devices) == 0 then
-    [ div [] [ text "no appliances registered yet" ] ]
+    [ div [] [ text "No appliances registered yet. Click the button below to add one!" ] ]
   else
     (List.map display_device devices)
   )
@@ -99,7 +102,7 @@ add_device devices name addr message = div []
     header
   , h2 [] [ text "Add Appliance" ]
   , if (String.length message) /= 0 then
-      div [] [ text message ]
+      div [ class "alert alert-warning" ] [ text message ]
     else
       span [] []
   , label [] [
@@ -121,11 +124,11 @@ add_device2 devices draw msg = div []
     header
   , h2 [] [ text "Add Appliance" ]
   , if (String.length msg) > 0 then
-      p [] [ text msg ]
+      div [ class "alert alert-warning" ] [ text msg ]
     else
       span [] []
   , label [] [
-      text "Power Draw (watts): "
+      text "Power Consumption (Watts): "
     , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (if draw > 0 then (toString draw) else "") ] [ ]
     ]
   , hr [] []
@@ -151,11 +154,11 @@ view_device device =
   div []
     [
       header
-    , h2 [] [ text ("Manage " ++ device.name) ]
-    , div [] [ text ("Power draw when running: " ++ (toString device.draw) ++ "W") ]
+    , h2 [] [ text device.name ]
     , div [ class (if device.running then "well on" else "well off") ] [
-        text (if device.running then "on" else "off")
+        text (if device.running then ("on (" ++ (toString device.draw) ++ "W)") else "off (0W)")
       ]
+    , div [] [ text ("Power consumption when running: " ++ (toString device.draw) ++ "W") ]
     , hr [] []
     , button [ onClick (ToggleDevice device.id), class "btn btn-block btn-lg btn-primary" ] [ text (if device.running then "Switch off" else "Switch on") ]
     , button [ onClick (EditDevice device.id), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
@@ -178,7 +181,7 @@ edit_device message device =
     , input [ class "form-control", type_ "text", placeholder "Name", onInput UpdateName, value device.name ] [ ]
     ]
   , label [] [
-    text "Power Draw (watts): "
+    text "Power Consumption (Watts): "
   , input [ class "form-control", type_ "number", placeholder "0", onInput UpdateDraw, value (if device.draw > 0 then (toString device.draw) else "") ] [ ]
   ]
   , hr [] []
