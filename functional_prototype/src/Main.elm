@@ -157,6 +157,31 @@ update msg model =
     ConfirmReset ->
         { model | page = Pages.confirm_reset } ! []
 
+    StartExampleData ->
+      let
+          make_device i (name, running, draw) = Device i name running draw
+          devices = List.sortBy .name <| List.indexedMap make_device
+            [ (,,) "Kitchen light" True 20
+            , (,,) "Study light" False 20
+            , (,,) "Dining room light" False 20
+            , (,,) "Lounge light" False 20
+            , (,,) "Shed floodlight" False 200
+            , (,,) "Toaster" False 1000
+            , (,,) "Fridge" True 200
+            , (,,) "Dish washer" False 500
+            , (,,) "Desktop computer" True 350
+            ]
+          warning_level = 1000
+      in
+        { page = Pages.home devices warning_level
+        , devices = devices
+        , max_id = List.length devices
+        , device_form = empty_device_form
+        , message = ""
+        , warning_level = warning_level
+        , setup_complete = True
+        } ! []
+
 
 toggle : Int -> Device -> Device
 toggle target device =

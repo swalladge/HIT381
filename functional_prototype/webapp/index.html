@@ -25,7 +25,7 @@
     var startingState;
     var powermvc;
     try {
-      storedState = localStorage.getItem('elm-power-save');
+      storedState = localStorage.getItem('elm-power-save3');
       startingState = storedState ? JSON.parse(storedState) : null;
       powermvc = Elm.Main.fullscreen(startingState);
     } catch (e) {
@@ -36,7 +36,7 @@
     }
 
     powermvc.ports.setStorage.subscribe(function(state) {
-        localStorage.setItem('elm-power-save', JSON.stringify(state));
+        localStorage.setItem('elm-power-save3', JSON.stringify(state));
     });
     powermvc.ports.resetStorage.subscribe(function() {
         localStorage.clear();

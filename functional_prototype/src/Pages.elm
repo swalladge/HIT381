@@ -24,9 +24,10 @@ setup : Html Msg
 setup = div []
     [ header
     , p [] [ text "This screen is where quick-start initial settings would be entered, such as server connections, gps location of the house for use in alerts, etc." ]
-    , p [] [ text "Ignore for now - go ahead and try out the interface! :)" ]
+    , p [] [ text "For now, you can either launch into the interface from scratch, or start with some pre-loaded settings and connected appliances to test with." ]
     , hr [] []
-    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Enter" ]
+    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Start" ]
+    , button [ onClick StartExampleData, class "btn btn-block btn-lg btn-primary" ] [ text "Start with example data" ]
     , button [ onClick Welcome, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
     ]
 
