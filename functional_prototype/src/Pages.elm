@@ -153,12 +153,9 @@ view_device device =
     [
       header
     , h2 [] [ text device.name ]
-    , div [ class (if device.running then "well on" else "well off") ] [
-        text (if device.running then ("on (" ++ (toString device.draw) ++ "W)") else "off (0W)")
-      ]
-    , div [] [ text ("Power consumption when running: " ++ (toString device.draw) ++ "W") ]
+    , button [ onClick (ToggleDevice device.id), class ("btn btn-block btn-lg " ++ if device.running then "active btn-success" else "btn-danger"), attribute "data-toggle" "button" ] [ text (if device.running then "On" else "Off") ]
+    , p [] [ text ("Power consumption when running: " ++ (toString device.draw) ++ "W") ]
     , hr [] []
-    , button [ onClick (ToggleDevice device.id), class "btn btn-block btn-lg btn-primary" ] [ text (if device.running then "Switch off" else "Switch on") ]
     , button [ onClick (EditDevice device.id), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
 
     , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
