@@ -8,7 +8,7 @@ import Types exposing (..)
 
 name = "Smart Power"
 
-welcome_text = "Manage your smart appliances, view power usage, save power!"
+welcome_text = "Manage your smart appliances, view power usage, save power! This is a smart home controller with a power-saving twist!"
 
 header = div [ class "centre" ] [ h1 [] [ text name ] ]
 
@@ -23,11 +23,10 @@ welcome = div []
 setup : Html Msg
 setup = div []
     [ header
-    , p [] [ text "This screen is where quick-start initial settings would be entered, such as server connections, gps location of the house for use in alerts, etc." ]
-    , p [] [ text "For now, you can either launch into the interface from scratch, or start with some pre-loaded settings and connected appliances to test with." ]
+    , p [] [ text "Press start to continue to the app to enter appliances manually, or 'auto find' to automatically search for appliances to control!" ]
     , hr [] []
+    , button [ onClick StartExampleData, class "btn btn-block btn-lg btn-primary" ] [ text "Auto Find!" ]
     , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Start" ]
-    , button [ onClick StartExampleData, class "btn btn-block btn-lg btn-primary" ] [ text "Start with example data" ]
     , button [ onClick Welcome, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
     ]
 
