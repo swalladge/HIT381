@@ -81,7 +81,7 @@ display_device : Device -> Html Msg
 display_device device = div [ class "device-listing panel panel-default", onClick (ViewDevice device.id)] [
   div [ class "panel-heading", style [("cursor", "pointer")] ] [
       text device.name
-    , div [ class (if device.running then "status-icon on" else "status-icon off") ] [
+    , div [ class <| "status-icon pull-right " ++ (if device.running then "on" else "off") ] [
         text (if device.running then "on" else "off")
       ]
     ]
