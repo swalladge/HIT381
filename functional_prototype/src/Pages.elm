@@ -64,7 +64,9 @@ home d wl =
     div []
       [
         header
+      , button [ class "pull-right btn-info btn", onClick Settings ] [ i [ class "fa fa-cog" ] [] ]
       , h2 [] [ text "Status" ]
+      , div [ class "clearfix" ] []
       , div [ class "panel panel-default" ]
           [ div [ class "panel-heading" ] [ text "Current power consumption" ]
           , div [ class <| "panel-body bg-" ++ (if isWarning then "danger" else "success") ]
@@ -79,7 +81,6 @@ home d wl =
         ]
       , hr [] []
       , button [ onClick <| AddDevice True, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
-      , button [ onClick Settings, class "btn btn-block btn-lg btn-warning" ] [ text "Settings" ]
       , button [ onClick GoToHelpPage, class "btn btn-block btn-lg btn-default" ] [ text "Help" ]
       ]
 
