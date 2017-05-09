@@ -63,11 +63,14 @@ home d wl =
       [
         header
       , h2 [] [ text "Status" ]
-      , div [ class <| "alert alert-" ++ (if isWarning then "warning" else "success") ]
-        [ text ("Current power consumption: " ++ (toString draw) ++ "W")
-        , warning
-        ]
-      , div [] [ text ((toString n) ++ " appliance" ++ (if n == 1 then "" else "s") ++ " (" ++ (toString n_running) ++ " running)") ]
+      , div [ class "panel panel-default" ]
+          [ div [ class "panel-heading" ] [ text "Current power consumption" ]
+          , div [ class <| "panel-body bg-" ++ (if isWarning then "danger" else "success") ]
+            [ text ((toString draw) ++ " Watts")
+            , warning
+            ]
+          ]
+      , div [ class "panel-body" ] [ text ((toString n) ++ " appliance" ++ (if n == 1 then "" else "s") ++ " (" ++ (toString n_running) ++ " running)") ]
       , h2 [] [ text "Appliances" ]
       , div [] [
           device_list d
@@ -78,14 +81,13 @@ home d wl =
       ]
 
 display_device : Device -> Html Msg
-display_device device = div [ class "device-listing panel panel-default", onClick (ViewDevice device.id)] [
-  div [ class "panel-heading", style [("cursor", "pointer")] ] [
-      text device.name
+display_device device = 
+  button [ class "btn btn-block btn-lg btn-default", style [("cursor", "pointer")], onClick (ViewDevice device.id) ] [
+      div [ class "pull-left" ] [ text device.name ]
     , div [ class <| "status-icon pull-right " ++ (if device.running then "on" else "off") ] [
         text (if device.running then "on" else "off")
       ]
     ]
-  ]
 
 
 device_list : List Device -> Html Msg
