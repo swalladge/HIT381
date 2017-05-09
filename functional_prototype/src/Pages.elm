@@ -80,6 +80,7 @@ home d wl =
       , hr [] []
       , button [ onClick <| AddDevice True, class "btn btn-block btn-lg btn-primary" ] [ text "Add Appliance" ]
       , button [ onClick Settings, class "btn btn-block btn-lg btn-warning" ] [ text "Settings" ]
+      , button [ onClick GoToHelpPage, class "btn btn-block btn-lg btn-default" ] [ text "Help" ]
       ]
 
 display_device : Device -> Html Msg
@@ -189,3 +190,20 @@ edit_device message device =
   , button [ onClick <| SaveDevice device.id, class "btn btn-block btn-lg btn-primary" ] [ text "Save" ]
   , button [ onClick <| ViewDevice device.id, class "btn btn-block btn-lg btn-warning" ] [ text "Cancel" ]
   ]
+
+view_help : Html Msg
+view_help =
+  div []
+    [
+      header
+    , h2 [] [ text "Help" ]
+    , h3 [] [ text "About" ]
+    , p [] [ text "Smart Power is a smart home controller that can connect to all your smart appliances (lights, toaster, etc.) and control them." ]
+    , p [] [ text "It is focused on helping you save power, so it provides features such as displaying the total amount of power in use at any one time." ]
+    , h3 [] [ text "Glossary" ]
+    , p [] [ b [] [ text "Watts (W)" ], text ": unit of power" ]
+    , p [] [ b [] [ text "Power consumption: " ], text "the amount of power being used at a point in time." ]
+    , hr [] []
+    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Back to Home" ]
+    ]
+

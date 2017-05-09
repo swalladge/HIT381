@@ -56,6 +56,7 @@ type Msg
     | ToggleDevice Int
     | ConfirmReset
     | StartExampleData
+    | GoToHelpPage
 
 empty_device_form : DeviceForm
 empty_device_form =

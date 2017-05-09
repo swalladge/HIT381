@@ -157,6 +157,9 @@ update msg model =
     ConfirmReset ->
         { model | page = Pages.confirm_reset } ! []
 
+    GoToHelpPage ->
+        { model | page = Pages.view_help } ! []
+
     StartExampleData ->
       let
           make_device i (name, running, draw) = Device i name running draw
