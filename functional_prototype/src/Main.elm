@@ -121,7 +121,7 @@ update msg model =
                   model.devices, model.device_form)
           else
             let d = (List.sortBy .name ((Device model.max_id model.device_form.name False model.device_form.draw) :: model.devices))
-            in (Pages.home d model.warning_level, d, empty_device_form)
+            in (Pages.view_device <| get_device d model.max_id, d, empty_device_form)
       in
         { model | max_id = model.max_id + 1, device_form = device_form, devices = devices, page = page } ! []
 

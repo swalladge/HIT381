@@ -41,8 +41,10 @@ settings wl = div []
         , p [] [ text "0 = disable alert" ]
       ]
     , hr [] []
+    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Save and back to Home" ]
+    , hr [] []
+    , p [] [ text "Warning area! If you wish to reset the app back to factory defaults, click the button below." ]
     , button [ onClick ConfirmReset, class "btn btn-block btn-lg btn-danger" ] [ text "Reset App" ]
-    , button [ onClick Home, class "btn btn-block btn-lg btn-primary" ] [ text "Return" ]
     ]
 
 
@@ -162,7 +164,7 @@ view_device device =
     , hr [] []
     , button [ onClick (EditDevice device.id), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
 
-    , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back" ]
+    , button [ onClick Home, class "btn btn-block btn-lg btn-warning" ] [ text "Back to Home" ]
     ]
 
 edit_device : String -> Device -> Html Msg
