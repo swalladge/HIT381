@@ -111,7 +111,7 @@ add_device devices name addr message = div []
       span [] []
   , label [] [
       text "Name: "
-    , input [ class "form-control", type_ "text", placeholder "Kitchen Light", onInput UpdateName, value name ] [ ]
+    , input [ class "form-control", type_ "text", placeholder "Kitchen Light", maxlength 20, onInput UpdateName, value name ] [ ]
     ]
     , hr [] []
     , button [ onClick AddDevice2, class "btn btn-block btn-lg btn-primary" ] [ text "Next" ]
@@ -177,7 +177,7 @@ edit_device message device =
       span [] []
   , label [] [
       text "Name: "
-    , input [ class "form-control", type_ "text", placeholder "Name", onInput UpdateName, value device.name ] [ ]
+    , input [ class "form-control", type_ "text", placeholder "Name", maxlength 20, onInput UpdateName, value device.name ] [ ]
     ]
   , label [] [
     text "Power Consumption (Watts): "
