@@ -64,7 +64,6 @@ home d wl =
     div []
       [
         header
-      , button [ class "pull-right btn-info btn", onClick Settings ] [ i [ class "fa fa-cog" ] [] ]
       , h2 [] [ text "Status" ]
       , div [ class "clearfix" ] []
       , div [ class "panel panel-default" ]
@@ -74,6 +73,7 @@ home d wl =
             , warning
             ]
           ]
+      , button [ class "pull-right btn-info btn", onClick Settings ] [ text "Settings ", i [ class "fa fa-cog" ] [] ]
       , div [ class "panel-body" ] [ text ((toString n) ++ " appliance" ++ (if n == 1 then "" else "s") ++ " (" ++ (toString n_running) ++ " running)") ]
       , h2 [] [ text "Appliances" ]
       , div [] [
