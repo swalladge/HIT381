@@ -168,10 +168,10 @@ view_device device =
     [
       header
     , h2 [] [ text device.name ]
-    , button [ onClick (ToggleDevice device.id), class ("btn btn-block btn-lg " ++ if device.running then "active btn-success" else "btn-danger"), attribute "data-toggle" "button" ] [ text (if device.running then ("On (" ++ (toString device.draw) ++ "W)") else "Off (0W)") ]
+    , button [ onClick (ToggleDevice device.id), class ("btn btn-block btn-lg " ++ if device.running then "active btn-success" else "btn-danger"), attribute "data-toggle" "button" ] [ text (if device.running then "On" else "Off") ]
     , p [] []
-    , p [] [ text <| if device.running then "" else
-          ("Power consumption when running: " ++ (toString device.draw) ++ "W") ]
+    , p [] [ text <| if device.running then "Power consumption: " ++ (toString device.draw) ++ " Watts"  else
+          ("Power consumption: 0 Watts (" ++ (toString device.draw) ++ " Watts when on)") ]
     , hr [] []
     , button [ onClick (EditDevice device.id), class "btn btn-block btn-lg btn-info" ] [ text "Edit Appliance" ]
 
