@@ -8,14 +8,23 @@ import Types exposing (..)
 
 name = "Smart Power"
 
-welcome_text = "Manage your smart appliances, view power usage, save power! This is a smart home controller with a power-saving twist!"
-
 header = div [ class "centre" ] [ h1 [] [ text name ] ]
 
 welcome : Html Msg
 welcome = div []
-    [ h1 [ class "centre" ] [ text <| "Welcome to " ++ name  ]
-    , p [] [ text welcome_text ]
+    [ h1 [ class "centre" ] [ text name ]
+    , h2 [ class "centre" ] [ text "Welcome!" ]
+    , p [] [
+        text "Manage your "
+      , b [] [ text "smart appliances" ]
+      , text ", view "
+      , b [] [ text "power usage" ]
+      , text ", and "
+      , b [] [ text "save power" ]
+      , text " with this "
+      , b [] [ text "smart home controller" ]
+      , text "!"
+      ]
     , hr [] []
     , button [ onClick Setup, class "btn btn-block btn-lg btn-primary" ] [ text "Get Started!" ]
     ]
@@ -85,7 +94,7 @@ home d wl =
       ]
 
 display_device : Device -> Html Msg
-display_device device = 
+display_device device =
   button [ class "btn btn-block btn-lg btn-default", style [("cursor", "pointer")], onClick (ViewDevice device.id) ] [
       div [ class "pull-left" ] [ text device.name ]
     , div [ class <| "status-icon pull-right " ++ (if device.running then "on" else "off") ] [
