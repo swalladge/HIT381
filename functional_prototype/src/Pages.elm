@@ -13,7 +13,7 @@ header = div [ class "centre" ] [ h1 [] [ text name ] ]
 welcome : Html Msg
 welcome = div []
     [  div [ class "centre" ] [
-      img [ src "/icon.png", class "welcome-icon" ] []
+      img [ src "icon.png", class "welcome-icon" ] []
     ]
     , h2 [ class "clearfix" ] []
     , p [] [
