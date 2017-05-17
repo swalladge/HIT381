@@ -46,3 +46,8 @@ label {
 .device-listing {
   margin-bottom: 5px;
 }
+
+.welcome-icon {
+  width: 70%;
+  height: auto;
+}

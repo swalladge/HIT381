@@ -12,8 +12,10 @@ header = div [ class "centre" ] [ h1 [] [ text name ] ]
 
 welcome : Html Msg
 welcome = div []
-    [ h1 [ class "centre" ] [ text name ]
-    , h2 [ class "centre" ] [ text "Welcome!" ]
+    [  div [ class "centre" ] [
+      img [ src "/icon.png", class "welcome-icon" ] []
+    ]
+    , h2 [ class "clearfix" ] []
     , p [] [
         text "Manage your "
       , b [] [ text "smart appliances" ]
