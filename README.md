@@ -10,11 +10,16 @@ Files and such for the project - functional prototypes, etc.
 
 ## Links
 
-- deliverable 1: <https://uni.swalladge.id.au/hit381/functional_prototype1/>
-- deliverable 2: <https://uni.swalladge.id.au/hit381/functional_prototype2/>
+Various versions are deployed at the following urls:
+
+- deliverable 1 (initial design): <https://uni.swalladge.id.au/hit381/functional_prototype1/>
+- deliverable 2 (adding functionality): <https://uni.swalladge.id.au/hit381/functional_prototype2/>
 - deliverable 3 (as tested in user testing):
   <https://uni.swalladge.id.au/hit381/functional_prototype3/>
-- with button redesign: <https://uni.swalladge.id.au/hit381/functional_prototype3-btn-redesign/>
+- deliverable 3 (with button redesign): <https://uni.swalladge.id.au/hit381/functional_prototype3-btn-redesign/>
+- deliverable 4 (after user testing): <https://uni.swalladge.id.au/hit381/functional_prototype4/>
+- deliverable 5 (after web tests): <https://uni.swalladge.id.au/hit381/functional_prototype5/>
+- final prototype: <https://uni.swalladge.id.au/hit381/functional_prototype-final/>
 
 
 ## building the functional prototype
